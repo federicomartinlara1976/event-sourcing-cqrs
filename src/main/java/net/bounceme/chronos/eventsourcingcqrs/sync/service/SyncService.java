@@ -45,7 +45,7 @@ public class SyncService {
 		Date newSyncDate = new Date();
 		List<Event> events = eventStore.getEventsAfterOrderAsc(lastSyncDate);
 
-		for (Event e : events) {
+		events.forEach(e -> {
 			if (e instanceof PostAddedEvent) {
 				applyEvent((PostAddedEvent) e);
 			} else if (e instanceof PostUpdatedEvent) {
@@ -63,7 +63,7 @@ public class SyncService {
 			} else if (e instanceof ReactionRemovedEvent) {
 				applyEvent((ReactionRemovedEvent) e);
 			}
-		}
+		});
 
 		lastSyncDate = newSyncDate;
 	}
