@@ -40,7 +40,7 @@ public class CommandService {
 	}
 
 	public CommentAddedEvent addComment(String postId, CommentAddedEvent event) {
-		event.setPostId(UUID.randomUUID().toString());
+		event.setCommentId(UUID.randomUUID().toString());
 		event.setPostId(postId);
 		eventStore.addEvent(event);
 		return event;
