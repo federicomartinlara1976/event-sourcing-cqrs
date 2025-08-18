@@ -23,9 +23,10 @@ public class EventStore {
 	}
 
 	public List<Event> getEventsAfterOrderAsc(Date dateAfter) {
-		List<Event> events = eventStore.stream().filter(e -> e.getCreatedDate().after(dateAfter))
+		List<Event> events = eventStore.stream()
+				.filter(e -> e.getCreatedDate().after(dateAfter))
 				.collect(Collectors.toList());
-		Collections.reverse(events); // Return events in creation order
+		Collections.reverse(events); // TODO - Implementar esto usando sorted antes de hacer el collect
 		return events;
 	}
 }
