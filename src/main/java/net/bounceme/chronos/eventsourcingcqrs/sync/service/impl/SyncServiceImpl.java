@@ -107,15 +107,15 @@ public class SyncServiceImpl implements SyncService {
 	}
 
 	private void applyEvent(CommentRemovedEvent event) {
-		// Similar logic
+		// TODO - Similar logic
 	}
 
 	private void applyEvent(ReactionAddedEvent event) {
-		// Similar logic
+		// TODO - Similar logic
 	}
 
 	private void applyEvent(ReactionRemovedEvent event) {
-		// Similar logic
+		// TODO - Similar logic
 	}
 
 	private void savePost(Post post) {
