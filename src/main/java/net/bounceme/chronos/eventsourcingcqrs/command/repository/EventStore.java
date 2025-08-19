@@ -1,7 +1,6 @@
 package net.bounceme.chronos.eventsourcingcqrs.command.repository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,10 +22,12 @@ public class EventStore {
 	}
 
 	public List<Event> getEventsAfterOrderAsc(Date dateAfter) {
-		List<Event> events = eventStore.stream()
-				.filter(e -> e.getCreatedDate().after(dateAfter))
+		List<Event> events = eventStore
+				.stream().filter(e -> e.getCreatedDate().after(dateAfter))
+				// El criterio de ordenación es desde el evento más reciente al más antiguo
+				.sorted((e1, e2) -> Long.valueOf(e2.getCreatedDate().getTime() - e1.getCreatedDate().getTime()).intValue())
 				.collect(Collectors.toList());
-		Collections.reverse(events); // TODO - Implementar esto usando sorted antes de hacer el collect
+		
 		return events;
 	}
 }
