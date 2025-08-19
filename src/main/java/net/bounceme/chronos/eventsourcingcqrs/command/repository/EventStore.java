@@ -26,11 +26,9 @@ public class EventStore {
 	}
 
 	public List<Event> getEventsAfterOrderAsc(Date dateAfter) {
-		List<Event> events = eventStore
+		return eventStore
 				.stream().filter(e -> e.getCreatedDate().after(dateAfter))
 				.sorted(fromMostRecent)
-				.collect(Collectors.toList());
-		
-		return events;
+				.toList();
 	}
 }
