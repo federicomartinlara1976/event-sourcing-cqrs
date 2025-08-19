@@ -3,7 +3,6 @@ package net.bounceme.chronos.eventsourcingcqrs.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
