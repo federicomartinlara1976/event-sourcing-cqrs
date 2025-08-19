@@ -70,7 +70,7 @@ public class SyncServiceImpl implements SyncService {
 		post.setContent(event.getContent());
 		savePost(post);
 		
-		log.info("Saved: {}", post.toString());
+		log.info("Saved: {}", post);
 	}
 
 	private void applyEvent(PostUpdatedEvent event) {
@@ -79,7 +79,7 @@ public class SyncServiceImpl implements SyncService {
 		post.setContent(event.getContent());
 		savePost(post);
 		
-		log.info("Updated: {}", post.toString());
+		log.info("Updated: {}", post);
 	}
 
 	private void applyEvent(PostRemovedEvent event) {
@@ -93,6 +93,8 @@ public class SyncServiceImpl implements SyncService {
 		comment.setId(event.getCommentId());
 		comment.setContent(event.getContent());
 		saveComment(event.getPostId(), comment);
+		
+		log.info("Saved: {}", comment);
 	}
 
 	private void applyEvent(CommentUpdatedEvent event) {
@@ -100,6 +102,8 @@ public class SyncServiceImpl implements SyncService {
 		comment.setId(event.getCommentId());
 		comment.setContent(event.getContent());
 		saveComment(event.getPostId(), comment);
+		
+		log.info("Updated: {}", comment);
 	}
 
 	private void applyEvent(CommentRemovedEvent event) {
