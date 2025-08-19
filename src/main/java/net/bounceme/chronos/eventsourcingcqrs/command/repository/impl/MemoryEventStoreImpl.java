@@ -27,7 +27,7 @@ public class MemoryEventStoreImpl implements EventStore {
 	@Override
 	public void addEvent(Event event) {
 		eventStore.add(event);
-		log.info("Added: {}", event.toString());
+		log.info("Added: {}", event);
 	}
 
 	@Override
