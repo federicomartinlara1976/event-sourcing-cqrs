@@ -1,7 +1,6 @@
 package net.bounceme.chronos.eventsourcingcqrs.sync.service.impl;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -12,7 +11,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import net.bounceme.chronos.eventsourcingcqrs.command.event.Event;
 import net.bounceme.chronos.eventsourcingcqrs.command.event.comment.CommentAddedEvent;
 import net.bounceme.chronos.eventsourcingcqrs.command.event.comment.CommentRemovedEvent;
 import net.bounceme.chronos.eventsourcingcqrs.command.event.comment.CommentUpdatedEvent;
@@ -26,6 +24,7 @@ import net.bounceme.chronos.eventsourcingcqrs.query.model.Comment;
 import net.bounceme.chronos.eventsourcingcqrs.query.model.Post;
 import net.bounceme.chronos.eventsourcingcqrs.query.repository.PostRepository;
 import net.bounceme.chronos.eventsourcingcqrs.sync.service.SyncService;
+import net.bounceme.chronos.eventsourcingcqrs.utils.Ordering;
 
 @Service
 @Slf4j
@@ -45,22 +44,22 @@ public class SyncServiceImpl implements SyncService {
 	@Override
 	public void sync() {
 		Date newSyncDate = new Date();
-		List<Event> events = eventStore.getEventsAfterOrderAsc(lastSyncDate);
-
-		events.forEach(e -> {
-			
-			switch(e) {
-				case PostAddedEvent ev -> applyEvent(ev);
-				case PostUpdatedEvent ev -> applyEvent(ev);
-				case PostRemovedEvent ev -> applyEvent(ev);
-				case CommentAddedEvent ev -> applyEvent(ev);
-				case CommentUpdatedEvent ev -> applyEvent(ev);
-				case CommentRemovedEvent ev -> applyEvent(ev);
-				case ReactionAddedEvent ev -> applyEvent(ev);
-				case ReactionRemovedEvent ev -> applyEvent(ev);
-				default -> throw new IllegalStateException("Tipo de evento desconocido: " + e.getClass());
-			}
-		});
+		
+		eventStore
+			.getEventsAfterOrder(lastSyncDate, Ordering.DESC)
+			.forEach(e -> {
+				switch(e) {
+					case PostAddedEvent ev -> applyEvent(ev);
+					case PostUpdatedEvent ev -> applyEvent(ev);
+					case PostRemovedEvent ev -> applyEvent(ev);
+					case CommentAddedEvent ev -> applyEvent(ev);
+					case CommentUpdatedEvent ev -> applyEvent(ev);
+					case CommentRemovedEvent ev -> applyEvent(ev);
+					case ReactionAddedEvent ev -> applyEvent(ev);
+					case ReactionRemovedEvent ev -> applyEvent(ev);
+					default -> throw new IllegalStateException("Tipo de evento desconocido: " + e.getClass());
+				}
+			});
 
 		lastSyncDate = newSyncDate;
 	}
