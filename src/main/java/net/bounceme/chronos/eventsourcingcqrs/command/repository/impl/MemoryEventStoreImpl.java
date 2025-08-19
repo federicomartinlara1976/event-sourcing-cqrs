@@ -17,12 +17,12 @@ import net.bounceme.chronos.eventsourcingcqrs.utils.Ordering;
 public class MemoryEventStoreImpl implements EventStore {
 
 	private final List<Event> eventStore = new ArrayList<>();
-	
+
 	// El criterio de ordenación es desde el evento más reciente al más antiguo
-	private static Comparator<Event> FROM_MOST_RECENT = Comparator.comparing(Event::getCreatedDate).reversed();
-	
+	private static final Comparator<Event> FROM_MOST_RECENT = Comparator.comparing(Event::getCreatedDate).reversed();
+
 	// El criterio de ordenación es desde el evento más antiguo al más reciente
-	private static Comparator<Event> FROM_LEAST_RECENT = Comparator.comparing(Event::getCreatedDate);
+	private static final Comparator<Event> FROM_LEAST_RECENT = Comparator.comparing(Event::getCreatedDate);
 
 	@Override
 	public void addEvent(Event event) {
@@ -32,9 +32,7 @@ public class MemoryEventStoreImpl implements EventStore {
 
 	@Override
 	public List<Event> getEventsAfterOrder(Date dateAfter, Ordering ordering) {
-		return eventStore
-				.stream().filter(e -> e.getCreatedDate().after(dateAfter))
-				.sorted(Ordering.DESC.equals(ordering) ? FROM_MOST_RECENT : FROM_LEAST_RECENT)
-				.toList();
+		return eventStore.stream().filter(e -> e.getCreatedDate().after(dateAfter))
+				.sorted(Ordering.DESC.equals(ordering) ? FROM_MOST_RECENT : FROM_LEAST_RECENT).toList();
 	}
 }
