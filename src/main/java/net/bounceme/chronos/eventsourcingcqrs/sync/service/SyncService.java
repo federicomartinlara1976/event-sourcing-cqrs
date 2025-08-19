@@ -46,22 +46,17 @@ public class SyncService {
 		List<Event> events = eventStore.getEventsAfterOrderAsc(lastSyncDate);
 
 		events.forEach(e -> {
-			if (e instanceof PostAddedEvent) {
-				applyEvent((PostAddedEvent) e);
-			} else if (e instanceof PostUpdatedEvent) {
-				applyEvent((PostUpdatedEvent) e);
-			} else if (e instanceof PostRemovedEvent) {
-				applyEvent((PostRemovedEvent) e);
-			} else if (e instanceof CommentAddedEvent) {
-				applyEvent((CommentAddedEvent) e);
-			} else if (e instanceof CommentUpdatedEvent) {
-				applyEvent((CommentUpdatedEvent) e);
-			} else if (e instanceof CommentRemovedEvent) {
-				applyEvent((CommentRemovedEvent) e);
-			} else if (e instanceof ReactionAddedEvent) {
-				applyEvent((ReactionAddedEvent) e);
-			} else if (e instanceof ReactionRemovedEvent) {
-				applyEvent((ReactionRemovedEvent) e);
+			
+			switch(e) {
+				case PostAddedEvent ev -> applyEvent(ev);
+				case PostUpdatedEvent ev -> applyEvent(ev);
+				case PostRemovedEvent ev -> applyEvent(ev);
+				case CommentAddedEvent ev -> applyEvent(ev);
+				case CommentUpdatedEvent ev -> applyEvent(ev);
+				case CommentRemovedEvent ev -> applyEvent(ev);
+				case ReactionAddedEvent ev -> applyEvent(ev);
+				case ReactionRemovedEvent ev -> applyEvent(ev);
+				default -> throw new IllegalStateException("Tipo de evento desconocido: " + e.getClass());
 			}
 		});
 
